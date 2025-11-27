@@ -673,6 +673,15 @@ After struggling with Axum, a new strategy was needed.
 
 This updated prompt now correctly asks for the implementation of the `GreetQuery` struct and the `warp::query()` filter, which are essential for parsing the name from the URL. It leads directly to the final, documented code.
 
+**Prompt 9: Styling & Interactive Effects for the Warp HTML Page**
+>"Now help me with styling the HTML served by Warp. Give me a step-by-step guide to add modern UI styling and small interactive effects to the HTML generated in main.rs. Apply the following css to my **index.html** code:
+
+>1. A navy-blue page background with white text .
+>2. A centered layout using a clean, modern font.
+>3. Have the **Hello, <name>, Welcome to Rust Toolkit Web**  text glowing.
+>4. A button with a White background, navy blue text and rounded which on hover glows.
+>5. Confetti effect when the webpage loads and when the **Click Me** button 
+
 
 ## 7. Common Issues & Fixes
 
