@@ -339,9 +339,3 @@ After struggling with Axum, a new strategy was needed.
 *   **Warp Crate Documentation:** Official documentation for the Warp framework. https://docs.rs/warp/
 *   **Tokio Tutorial:** Essential for understanding the asynchronous runtime that Warp is built on. https://tokio.rs/tokio/tutorial
 *   **Serde Documentation:** The go-to library for serializing and deserializing data structures in Rust, including JSON. https://serde.rs/
-## 8. References
-
-*   **The Rust Programming Language Book:** The official, comprehensive guide to learning Rust. https://doc.rust-lang.org/book/
-*   **Warp Crate Documentation:** Official documentation for the Warp framework. https://docs.rs/warp/
-*   **Tokio Tutorial:** Essential for understanding the asynchronous runtime that Warp is built on. https://tokio.rs/tokio/tutorial
-*   **Serde Documentation:** The go-to library for serializing and deserializing data structures in Rust, including JSON. https://serde.rs/
