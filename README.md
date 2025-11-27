@@ -328,6 +328,18 @@ rust-project/
 
 ### Part 1: Command-Line MVP (`rust_toolkit_cli/`)
 
+#### **rust_toolkit_cli/Cargo.toml**
+
+```toml
+[package]
+name = "rust_toolkit_cli"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+# No external dependencies needed for this CLI MVP
+```
+
 #### **rust_toolkit_cli/src/main.rs**
 
 ```rust
@@ -397,6 +409,23 @@ Visit: http://127.0.0.1:3000/?name=John
 ---
 
 ### Part 2: Web Server MVP (`rust_toolkit_web/`)
+
+#### **rust_toolkit_web/Cargo.toml**
+
+```toml
+[package]
+name = "rust_toolkit_web"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+warp = "0.3"                                      # Web framework
+tokio = { version = "1", features = ["full"] }    # Async runtime
+serde = { version = "1.0", features = ["derive"] }# Deserialize query parameters
+serde_json = "1.0"                                # JSON serialization
+
+```
+
 
 #### **rust_toolkit_web/src/main.rs**
 
