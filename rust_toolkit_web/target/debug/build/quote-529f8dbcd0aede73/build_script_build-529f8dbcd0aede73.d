@@ -1,5 +1,5 @@
-C:\Users\AK\capstone-project\rust_toolkit_web\target\debug\build\quote-529f8dbcd0aede73\build_script_build-529f8dbcd0aede73.d: C:\Users\AK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\quote-1.0.42\build.rs
+C:\Users\AK\rust-project\rust_toolkit_web\target\debug\build\quote-529f8dbcd0aede73\build_script_build-529f8dbcd0aede73.d: C:\Users\AK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\quote-1.0.42\build.rs
 
-C:\Users\AK\capstone-project\rust_toolkit_web\target\debug\build\quote-529f8dbcd0aede73\build_script_build-529f8dbcd0aede73.exe: C:\Users\AK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\quote-1.0.42\build.rs
+C:\Users\AK\rust-project\rust_toolkit_web\target\debug\build\quote-529f8dbcd0aede73\build_script_build-529f8dbcd0aede73.exe: C:\Users\AK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\quote-1.0.42\build.rs
 
 C:\Users\AK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\quote-1.0.42\build.rs:

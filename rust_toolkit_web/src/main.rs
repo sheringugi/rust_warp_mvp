@@ -48,11 +48,13 @@ async fn main() {
             warp::reply::html(html_body)
         });
 
-    // JSON endpoint for button click
-    let hello = warp::path("hello").map(|| {
-        warp::reply::json(&serde_json::json!({
-            "message": "Hello from Rust warp backend!"
-        }))
+    // Serve a JSON message at the exact "/hello" path
+    let hello = warp::path("hello")
+        .and(warp::path::end()) // Ensures the path is exactly /hello
+        .map(|| {
+            warp::reply::json(
+                &serde_json::json!({"message": "Hello from Rust warp backend!"}),
+            )
     });
 
     let routes = index.or(hello);

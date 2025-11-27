@@ -7,10 +7,10 @@ page_number: 1
 ## 1. Title & Objective
 
 **Title:**
-Prompt-Powered Kickstart: A Beginner's Toolkit for Rust
+**Prompt-Powered Kickstart: A Beginner's Toolkit for Rust and Warp**
 
 **Objective:**
-This toolkit documents the journey of learning Rust for backend development, as part of the Moringa AI Capstone Project. It showcases a learning progression, starting with a basic command-line application and evolving into a simple web application.
+This toolkit documents the journey of learning Rust for backend development. It showcases a learning progression, starting with a basic command-line application and evolving into a simple web application.
 
 The goal is to provide a clear and replicable guide for a beginner to:
 *   Set up a Rust development environment.
@@ -74,7 +74,7 @@ The installation method differs based on your operating system.
 #### On Windows
 
 1.  Go to the official Rust installation page: https://www.rust-lang.org/tools/install
-2.  Download and run `rustup-init.exe`.
+2.  Download and run `rustup-init.exe`as an adminstrator.
 3.  When the installer runs in your terminal, it will present you with a few options. For a standard setup, choose option `1`.
     ```
     Current installation options:
@@ -100,21 +100,185 @@ The installation method differs based on your operating system.
     ```
     The script will guide you through the installation and configure your shell.
 
-### Step 2: Verify the Installation (Crucial Step)
+### Step 2: Verify the Installation (Crucial Step — Windows, macOS & Linux)
 
-After the installation finishes, you **must close and reopen your terminal window**. This step is essential as it allows the changes to your system's PATH to be applied.
+After Rust finishes installing, you **must close and reopen your terminal** so that your system reloads the updated PATH environment variables.
 
-1.  Open a **new** terminal window.
-2.  Run the following commands to verify that the Rust compiler (`rustc`) and Cargo (`cargo`) are available:
-    ```bash
-    rustc --version
-    cargo --version
-    ```
-3.  You should see version numbers printed for both commands (e.g., `rustc 1.80.0...` and `cargo 1.80.0...`).
-    *   **Troubleshooting:** If you see a "command not found" error, it means the Cargo `bin` directory was not added to your PATH correctly. You may need to add it manually. The default locations are:
-        *   Windows: `C:\Users\YourUsername\.cargo\bin`
-        *   macOS/Linux: `$HOME/.cargo/bin`
+---
 
+#### **1. Open a *new* terminal window.**
+
+#### **2. Verify Rust and Cargo are available**
+
+Run:
+
+```bash
+rustc --version
+cargo --version
+```
+
+If the installation was successful, you should see version numbers like:
+
+```
+rustc 1.80.0 (xyz-date)
+cargo 1.80.0 (xyz-date)
+```
+
+If both commands work, you're done.
+
+---
+
+**Troubleshooting by Operating System**
+
+If you see **“command not found”**, your system cannot locate the Rust tools.
+Below are fixes for each platform:
+
+---
+
+**Windows Troubleshooting**
+
+Windows installs Rust and Cargo binaries in:
+
+```
+C:\Users\<YourUsername>\.cargo\bin
+```
+
+##### **A. Test using the full path:**
+
+```powershell
+C:\Users\<YourUsername>\.cargo\bin\rustc.exe -V
+C:\Users\<YourUsername>\.cargo\bin\cargo.exe -V
+```
+
+If these work → Rust is installed, but PATH is missing.
+
+##### **B. Fix PATH manually:**
+
+1. Open **Start Menu → Search "Environment Variables" → Enter**
+2. Under **User variables**, select **Path**
+3. Click **Edit → New**
+4. Add:
+
+   ```
+   C:\Users\<YourUsername>\.cargo\bin
+   ```
+5. Click **OK** to close all windows
+6. Reopen the terminal
+7. Run:
+
+   ```bash
+   rustc --version
+   cargo --version
+   ```
+
+---
+
+**macOS Troubleshooting**
+
+On macOS, Rust installs to:
+
+```
+$HOME/.cargo/bin
+```
+
+##### **A. Test using the full path:**
+
+```bash
+$HOME/.cargo/bin/rustc -V
+$HOME/.cargo/bin/cargo -V
+```
+
+If these work → Rust is installed, but PATH is not set properly.
+
+##### **B. Fix PATH depending on your shell:**
+
+###### **zsh users (macOS default)**
+
+Add this line to **~/.zshrc**:
+
+```bash
+export PATH="$HOME/.cargo/bin:$PATH"
+```
+
+Reload:
+
+```bash
+source ~/.zshrc
+```
+
+Then test again:
+
+```bash
+rustc --version
+```
+
+---
+
+**Linux Troubleshooting**
+
+Linux installs Rust tools to the same location as macOS:
+
+```
+$HOME/.cargo/bin
+```
+
+##### **A. Test using the full path:**
+
+```bash
+$HOME/.cargo/bin/rustc -V
+$HOME/.cargo/bin/cargo -V
+```
+
+If these work → PATH is missing.
+
+##### **B. Add to PATH (bash, zsh, fish, etc.)**
+
+###### **For bash** (Ubuntu, Debian, Fedora, Arch, etc.):
+
+Add to `~/.bashrc`:
+
+```bash
+export PATH="$HOME/.cargo/bin:$PATH"
+```
+
+Reload:
+
+```bash
+source ~/.bashrc
+```
+
+###### **For zsh**:
+
+Add to `~/.zshrc`:
+
+```bash
+export PATH="$HOME/.cargo/bin:$PATH"
+```
+
+Reload:
+
+```bash
+source ~/.zshrc
+```
+
+###### **For fish shell**:
+
+```bash
+set -U fish_user_paths $HOME/.cargo/bin $fish_user_paths
+```
+
+---
+
+**After Fixing PATH**
+
+Open a **new terminal** and test again:
+
+```bash
+rustc --version
+cargo --version
+```
+
+You should now see version numbers on all platforms.
 ### Step 3: Create the Projects
 
 With Rust and Cargo installed, you can now create the two projects for this toolkit from your main project directory.
@@ -133,11 +297,39 @@ You can now follow the instructions in the "Minimal Working Examples" section to
 
 ## 5. Minimal Working Examples (MVPs)
 
-### Part 1: Command-Line Application (`rust_toolkit_mvp`)
+This step walks you through running two independent Rust projects:
 
-This application demonstrates basic I/O in Rust. It prompts the user for their name, prints a personalized greeting, and provides a URL to view the greeting in the web application.
+1.  **A command-line MVP (`rust_toolkit_cli/`)**
+2.  **A web server MVP using Warp (`rust_toolkit_web/`)**
 
-**File: `rust_toolkit_mvp/src/main.rs`**
+Both are simple, self-contained examples that demonstrate Rust fundamentals in CLI and Web contexts.
+
+---
+
+### Project Structure
+
+Your repo should look like this:
+
+```
+rust-project/
+│
+├── rust_toolkit_cli/
+│   ├── Cargo.toml
+│   └── src/
+│       └── main.rs
+│
+└── rust_toolkit_web/
+    ├── Cargo.toml
+    └── src/
+        └── main.rs
+```
+
+---
+
+### Part 1: Command-Line MVP (`rust_toolkit_cli/`)
+
+#### **rust_toolkit_cli/src/main.rs**
+
 ```rust
 use std::io; // import input/output library
 
@@ -156,22 +348,58 @@ fn main() {
 }
 ```
 
-**To Run:**
+#### **How to Run the CLI MVP**
+
+##### **1. Navigate to the project**
+
 ```bash
-cd rust_toolkit_mvp
+cd rust_toolkit_cli
+```
+
+##### **2. Run the project**
+
+```bash
 cargo run
 ```
 
-You should see the following output, indicating the server is running:
+##### **3. Build the project**
+
+```bash
+cargo build
+```
+
+##### **4. Clean build artifacts**
+
+```bash
+cargo clean
+```
+
+##### **5. Update dependencies**
+
+(There are none for this project, but the command works)
+
+```bash
+cargo update
+```
+
+**Expected Output:**
 
 ```
-Server running at http://127.0.0.1:3000
+Welcome to Rust Toolkit MVP!
+Enter your name:
+John
+Hello, John! This is your Rust MVP.
+
+Now, see your greeting in the web app!
+Visit: http://127.0.0.1:3000/?name=John
 ```
-### Part 2: Web Application (`rust_toolkit_web`)
 
-This example creates a web server that serves a simple HTML page at the root URL (`/`) and a JSON API at `/hello`.
+---
 
-**File: `rust_toolkit_web/src/main.rs`**
+### Part 2: Web Server MVP (`rust_toolkit_web/`)
+
+#### **rust_toolkit_web/src/main.rs**
+
 ```rust
 use serde::Deserialize;
 use warp::Filter;
@@ -187,7 +415,6 @@ async fn main() {
     let index = warp::path::end()
         .and(warp::query::<GreetQuery>())
         .map(|query: GreetQuery| {
-            // Use the provided name or a default if it's missing
             let greeting = match query.name {
                 Some(name) => format!("Hello, {},", name),
                 None => "".to_string(),
@@ -220,31 +447,106 @@ async fn main() {
             </body>
             </html>
         "#, greeting);
+
             warp::reply::html(html_body)
         });
 
-    // JSON endpoint for button click
-    let hello = warp::path("hello").map(|| {
-        warp::reply::json(&serde_json::json!({
-            "message": "Hello from Rust warp backend!"
-        }))
-    });
+    // Serve a JSON message at the exact "/hello" path
+    let hello = warp::path("hello")
+        .and(warp::path::end()) // Ensures the path is exactly /hello
+        .map(|| {
+            warp::reply::json(
+                &serde_json::json!({"message": "Hello from Rust warp backend!"}),
+            )
+        });
 
     let routes = index.or(hello);
 
-    let addr = ([127, 0, 0, 1], 3000);
+    let addr = (, 3000);
     println!("Server running at http://127.0.0.1:{}", addr.1);
 
     warp::serve(routes).run(addr).await;
 }
 ```
 
-**Expected Output:**
+#### **How to Run the Web MVP**
 
-1.  Navigate to `http://127.0.0.1:3000` in your browser. You will see the HTML page.
-2.  Click the "Click me" button. The text "Hello from Rust warp backend!" will appear below it.
-3.  Navigate directly to `http://127.0.0.1:3000/hello`. You will see the raw JSON response: `{"message":"Hello from Rust warp backend!"}`.
+##### **1. Navigate to the project**
 
+```bash
+cd rust_toolkit_web
+```
+
+##### **2. Run the server**
+
+```bash
+cargo run
+```
+
+You’ll see:
+
+```
+Server running at http://127.0.0.1:3000
+```
+
+##### **3. Build the project**
+
+```bash
+cargo build
+```
+
+##### **4. Clean the target directory**
+
+```bash
+cargo clean
+```
+
+##### **5. Update dependencies**
+
+```bash
+cargo update
+```
+
+---
+
+#### **Web App Expected Behavior**
+
+The web server exposes two main routes with different behaviors based on the URL.
+
+---
+
+#### **1. Root URL (`/`)**
+
+This route serves the main HTML page. It can optionally accept a `name` query parameter to personalize the greeting.
+
+*   **URL:** `http://127.0.0.1:3000/`
+    *   **Response:** Displays the HTML page with the generic title "Welcome to Rust Toolkit Web".
+
+*   **URL:** `http://127.0.0.1:3000/?name=Calliope`
+    *   **Response:** Displays the HTML page with a personalized greeting: "Hello, Calliope, Welcome to Rust Toolkit Web".
+
+*   **URL:** `http://127.0.0.1:3000/?name=`
+    *   **Response:** The `name` parameter is present but empty. The page displays: "Hello, , Welcome to Rust Toolkit Web".
+
+*   **On-page Interaction:**
+    *   Clicking the **"Click me"** button on any of the above pages triggers a JavaScript `fetch` call to the `/hello` endpoint and displays the message "Hello from Rust warp backend!" on the page.
+
+---
+
+#### **2. JSON API Endpoint (`/hello`)**
+
+This route serves a static JSON object. It does not process any additional path segments or query parameters.
+
+*   **URL:** `http://127.0.0.1:3000/hello`
+    *   **Response:** Returns a JSON object.
+      ```json
+      {"message":"Hello from Rust warp backend!"}
+      ```
+
+*   **URL:** `http://127.0.0.1:3000/hello/Njeri`
+    *   **Response:** This will result in a **404 Not Found** error. The `/hello` route is defined to match that exact path only and does not accept sub-paths.
+
+---
 
 ## 6. AI Prompt Journal (A Structured Learning Journey)
 
@@ -326,6 +628,7 @@ After struggling with Axum, a new strategy was needed.
 > 2. Provide a JSON API endpoint at `/hello`, similar to returning a dictionary in FastAPI.
 >
 > For each step, please explain the necessary `Cargo.toml` dependencies (and their features), and how to structure the `main.rs` file. Focus on explaining the `warp::Filter` system and how to combine different routes, which seems different from FastAPI's approach."
+> **Show me the complete `Cargo.toml` file content.**"
 
 **Prompt 8: Connecting Frontend to Backend**
 > "I have the working Warp server from the previous step. Now I want to connect everything together.
