@@ -285,7 +285,7 @@ With Rust and Cargo installed, you can now create the two projects for this tool
 
 ```bash
 # Create the first project (CLI)
-cargo new rust_toolkit_mvp
+cargo new rust_toolkit_cli
 
 # Create the second project (Web)
 cargo new rust_toolkit_web
