@@ -577,7 +577,14 @@ This route serves a static JSON object. It does not process any additional path 
 
 ---
 
-## 6. AI Prompt Journal (A Structured Learning Journey)
+## 6. AI Agents Utilised
+
+**Claude**
+**Phind**
+**ChatGPT**
+**Gemini CLI**
+
+## 7. AI Prompt Journal (A Structured Learning Journey)
 
 This journal documents the step-by-step learning process using a series of structured AI prompts. It shows how to go from high-level concepts to a working application by treating the AI as a programming tutor.
 
@@ -683,7 +690,7 @@ This updated prompt now correctly asks for the implementation of the `GreetQuery
 >5. Confetti effect when the webpage loads and when the **Click Me** button 
 
 
-## 7. Common Issues & Fixes
+## 8. Common Issues & Fixes
 
 | Issue | Cause | Fix |
 | --- | --- | --- |
@@ -693,7 +700,7 @@ This updated prompt now correctly asks for the implementation of the `GreetQuery
 
 ---
 
-## 8. References
+## 9. References
 
 *   **The Rust Programming Language Book:** The official, comprehensive guide to learning Rust. https://doc.rust-lang.org/book/
 *   **Warp Crate Documentation:** Official documentation for the Warp framework. https://docs.rs/warp/
