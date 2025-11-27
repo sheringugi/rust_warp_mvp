@@ -26,7 +26,7 @@ The goal is to provide a clear and replicable guide for a beginner to:
 The project results in two minimal viable products (MVPs):
 1.  A command-line application (`rust_toolkit_mvp`) that takes user input and prints a greeting.
 2.  A web application (`rust_toolkit_web`) that serves an interactive HTML page and a JSON API endpoint using the Warp framework.
-
+Both applications work together to pass the name from the CLI to the web frontend.
 ---
 
 ## 2. Quick Summary of the Technology
@@ -135,7 +135,7 @@ You can now follow the instructions in the "Minimal Working Examples" section to
 
 ### Part 1: Command-Line Application (`rust_toolkit_mvp`)
 
-This application demonstrates basic I/O in Rust. It prompts the user for their name and prints a personalized greeting.
+This application demonstrates basic I/O in Rust. It prompts the user for their name, prints a personalized greeting, and provides a URL to view the greeting in the web application.
 
 **File: `rust_toolkit_mvp/src/main.rs`**
 ```rust
@@ -148,7 +148,11 @@ fn main() {
     let mut name = String::new(); // create a mutable string to store user input
     io::stdin().read_line(&mut name).expect("Failed to read line"); // read input
 
-    println!("Hello, {}! This is your Rust MVP.", name.trim()); // print greeting
+    let name = name.trim(); // Trim whitespace from the input
+
+    println!("Hello, {}! This is your Rust MVP.", name); // print greeting
+    println!("\nNow, see your greeting in the web app!");
+    println!("Visit: http://127.0.0.1:3000/?name={}", name);
 }
 ```
 
@@ -169,56 +173,68 @@ This example creates a web server that serves a simple HTML page at the root URL
 
 **File: `rust_toolkit_web/src/main.rs`**
 ```rust
+use serde::Deserialize;
 use warp::Filter;
+
+#[derive(Deserialize)]
+struct GreetQuery {
+    name: Option<String>,
+}
 
 #[tokio::main]
 async fn main() {
-    // Serve an interactive HTML page at the root path "/"
-    let index = warp::path::end().map(|| {
-        warp::reply::html(r#"
+    // Serve the index page at "/", handling an optional `name` query parameter
+    let index = warp::path::end()
+        .and(warp::query::<GreetQuery>())
+        .map(|query: GreetQuery| {
+            // Use the provided name or a default if it's missing
+            let greeting = match query.name {
+                Some(name) => format!("Hello, {},", name),
+                None => "".to_string(),
+            };
+
+            let html_body = format!(r#"
             <!DOCTYPE html>
             <html>
             <head>
                 <title>Rust Toolkit</title>
                 <style>
-                    body { font-family: Arial, sans-serif; margin: 2rem; }
-                    h1 { color: #2c3e50; }
-                    p { font-size: 1.2rem; }
-                    button { padding: 0.5rem 1rem; font-size: 1rem; }
+                    body {{ font-family: Arial, sans-serif; margin: 2rem; }}
+                    h1 {{ color: #2c3e50; }}
+                    p {{ font-size: 1.2rem; }}
+                    button {{ padding: 0.5rem 1rem; font-size: 1rem; }}
                 </style>
             </head>
             <body>
-                <h1>Welcome to Rust Toolkit Web</h1>
+                <h1>{} Welcome to Rust Toolkit Web</h1>
                 <p>This is your MVP frontend served directly from Warp.</p>
                 <button onclick="showMessage()">Click me</button>
                 <p id="msg"></p>
                 <script>
-                    async function showMessage() {
+                    async function showMessage() {{
                         const response = await fetch('/hello');
                         const data = await response.json();
                         document.getElementById('msg').innerText = data.message;
-                    }
+                    }}
                 </script>
             </body>
             </html>
-        "#)
-    });
-    
-    // Create a JSON endpoint at the "/hello" path
+        "#, greeting);
+            warp::reply::html(html_body)
+        });
+
+    // JSON endpoint for button click
     let hello = warp::path("hello").map(|| {
         warp::reply::json(&serde_json::json!({
             "message": "Hello from Rust warp backend!"
         }))
     });
-    
-    // Combine the routes. The `or` combinator tries the first route,
-    // and if it doesn't match, it tries the second one.
+
     let routes = index.or(hello);
-    
+
     let addr = ([127, 0, 0, 1], 3000);
-    println!("Server running at http://{}:{}", addr.0, addr.1);
-    
-    // Start the server
+    println!("Server running at http://127.0.0.1:{}", addr.1);
+
     warp::serve(routes).run(addr).await;
 }
 ```
@@ -312,15 +328,18 @@ After struggling with Axum, a new strategy was needed.
 > For each step, please explain the necessary `Cargo.toml` dependencies (and their features), and how to structure the `main.rs` file. Focus on explaining the `warp::Filter` system and how to combine different routes, which seems different from FastAPI's approach."
 
 **Prompt 8: Connecting Frontend to Backend**
-> "I have the working Warp server that serves HTML and a `/hello` JSON route. Now, I want to connect them.
+> "I have the working Warp server from the previous step. Now I want to connect everything together.
 > Could you guide me on how to modify the HTML string in my `main.rs` file to:
-> 1. Add a button with the text 'Click me'.
-> 2. Include a JavaScript function that, when the button is clicked, fetches the JSON message from `/hello`.
-> 3. Displays this message on the HTML page in a `<p>` tag.
+> 1.  **Handle URL query parameters?** I want to read an optional `name` from the URL (like `/?name=Alice`) and display a personalized greeting in the `<h1>` tag. This requires using Serde for deserialization.
+> 2.  **Add a button** with the text 'Click me'.
+> 3.  **Include a JavaScript function** that, when the button is clicked, fetches a JSON message from the `/hello` endpoint.
+> 4.  **Display this message** on the HTML page in a `<p>` tag.
 >
-> Please provide the complete, updated HTML content, and briefly explain the standard JavaScript `fetch` API and why `async/await` is used for this."
+> Please provide the complete, updated `main.rs` code. Explain how to use `warp::query()` with a `serde::Deserialize` struct to handle the query parameter, and how the `format!` macro is used to inject the greeting into the HTML."
 
 *   **AI Helpfulness:** The AI provided the complete, final code for the MVP. It generated the HTML with an `onclick` event, the asynchronous JavaScript `fetch` function to call the API, and the logic to update the DOM. It also correctly explained that serving the HTML from the same origin as the API avoids CORS issues, which is a key concept for web development.
+
+This updated prompt now correctly asks for the implementation of the `GreetQuery` struct and the `warp::query()` filter, which are essential for parsing the name from the URL. It leads directly to the final, documented code.
 
 
 ## 7. Common Issues & Fixes
