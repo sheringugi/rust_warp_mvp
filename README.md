@@ -579,10 +579,10 @@ This route serves a static JSON object. It does not process any additional path 
 
 ## 6. AI Agents Utilised
 
-**Claude**
-**Phind**
-**ChatGPT**
-**Gemini CLI**
+* **Claude**
+* **Phind**
+* **ChatGPT**
+* **Gemini CLI**
 
 ## 7. AI Prompt Journal (A Structured Learning Journey)
 
